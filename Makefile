@@ -7,8 +7,11 @@ setup:
 	@echo "Installing python dependencies"
 	. venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 	@echo "Setting up frontend dependencies..."
-	cd frontend && npm install
+	cd frontend && npm install && npm run build
 	@echo "Setup complete. Activate venv with: . venv/bin/activate"
+
+start: setup
+	@$(MAKE) run
 
 run:
 	@. venv/bin/activate && flask run
