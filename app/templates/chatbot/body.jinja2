@@ -1,0 +1,17 @@
+<div id="chat-main-area">
+    <div id="chat-output">
+        <div class="agent-message initial-greeting">
+            <div class="message-bubble">
+                <span>Hi {{ current_user.name }}! How can I help you today? (e.g., 'Show my cart', 'Add 1 apple to cart', 'What are my orders?')</span>
+            </div>
+        </div>
+    </div>
+    <div id="loading-indicator" style="display: none;">Thinking...</div>
+    <div id="chat-input-group" class="input-group chat-input">
+        <input type="text"
+               id="message-input"
+               class="form-control chat-input-box"
+               placeholder="Type your message..." />
+        <button id="send-button" class="btn btn-primary chat-send-button">Send</button>
+    </div>
+</div>

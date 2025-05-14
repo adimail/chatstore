@@ -1,0 +1,25 @@
+body {
+  padding-top: 4.5rem;
+  background-color: #f8f9fa;
+}
+
+.flash-message {
+  margin-top: 1rem;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.hrhr {
+  margin: 50px 0;
+}
+
+.main-container {
+  padding: 0 50px;
+}

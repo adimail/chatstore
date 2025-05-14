@@ -1,0 +1,16 @@
+{% extends "base.html.jinja2" %}
+{% include "chatbot/includes.jinja2" %}
+{% block content %}
+    <h4 class="text-center mb-3">Chat with our Assistant</h4>
+    <div id="chat-page-container"
+         data-chat-url="{{ url_for("chatbot.handle_chat_message") }}"
+         data-load-more-url="{{ url_for("chatbot.load_more_chats") }}"
+         data-clear-history-url="{{ url_for("chatbot.clear_chat_history_route") }}"
+         data-current-offset="{{ loaded_messages_count }}"
+         data-initial-limit="{{ initial_limit }}"
+         data-total-messages="{{ total_messages }}"
+         data-user-name="{{ current_user.name }}">
+        {% include "chatbot/body.jinja2" %}
+        {% include "chatbot/history.jinja2" %}
+    </div>
+{% endblock %}

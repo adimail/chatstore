@@ -1,0 +1,72 @@
+{% extends "base.html.jinja2" %}
+{% block head %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/cart.css') }}">
+{% endblock %}
+{% block content %}
+    <h1 class="mb-4">Your Shopping Cart</h1>
+    <div class="row">
+        <div class="col-md-8">
+            {% if cart_items %}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">Cart Items</div>
+                    <div class="card-body">
+                        {% for item in cart_items %}
+                            <div class="row cart-item-row align-items-center">
+                                <div class="col-md-6 cart-item-details">
+                                    {# Placeholder for image - <img src="..." alt="{{ item.product.name }}"> #}
+                                    <div>
+                                        <h5 class="mb-1">{{ item.product.name }}</h5>
+                                        <small class="text-muted">Price: ₹{{ "%.2f"|format(item.product.price) }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    Qty: {{ item.quantity }}
+                                    {# Add quantity update form later if needed #}
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <strong>₹{{ "%.2f"|format(item.total_item_price) }}</strong>
+                                </div>
+                                <div class="col-md-2 text-end cart-item-actions">
+                                    <form action="{{ url_for('web.remove_from_cart_web', item_id=item.id) }}"
+                                          method="post"
+                                          onsubmit="return confirm('Remove this item?');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    Your shopping cart is empty. <a href="{{ url_for("web.browse_products") }}">Start shopping!</a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header">Cart Summary</div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Subtotal</span>
+                        <span class="cart-total">₹{{ "%.2f"|format(total_price) }}</span>
+                    </div>
+                    {# Add lines for tax, shipping later if needed #}
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Total</span>
+                        <span class="cart-total text-primary">₹{{ "%.2f"|format(total_price) }}</span>
+                    </div>
+                    {% if cart_items %}
+                        <form action="{{ url_for("web.proceed_to_checkout_web") }}" method="post">
+                            <button type="submit" class="btn btn-success checkout-btn">Proceed to Checkout</button>
+                        </form>
+                    {% else %}
+                        <button type="button" class="btn btn-success checkout-btn" disabled>Proceed to Checkout</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

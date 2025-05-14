@@ -1,0 +1,26 @@
+.homepage-product-card .card-body {
+  padding: 0.8rem;
+}
+.homepage-product-card .card-title {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.homepage-product-card .price {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.cart-summary-home {
+  background-color: #f8f9fa;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+}
+.cart-summary-home li {
+  font-size: 0.9em;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px dashed #eee;
+}
+.cart-summary-home li:last-child {
+  border-bottom: none;
+}

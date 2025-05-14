@@ -1,0 +1,12 @@
+.profile-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+.order-summary-item {
+  border-bottom: 1px solid #eee;
+  padding: 0.5rem 0;
+}
+.order-summary-item:last-child {
+  border-bottom: none;
+}

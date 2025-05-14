@@ -1,0 +1,168 @@
+{% extends "base.html.jinja2" %}
+{% block head %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/products.css') }}">
+{% endblock %}
+{% block content %}
+    <h1 class="mb-4">Browse Products</h1>
+    <form method="GET" action="{{ url_for("web.browse_products") }}">
+        <div class="search-bar-top input-group">
+            <input type="search"
+                   class="form-control"
+                   placeholder="Search products by name..."
+                   name="search"
+                   value="{{ current_filters.search }}">
+            <button class="btn btn-primary" type="submit">Apply Filters</button>
+            <a href="{{ url_for("web.browse_products") }}"
+               class="btn btn-outline-secondary">Clear</a>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 order-lg-2">
+                <aside class="filter-sidebar">
+                    <h5>Filters</h5>
+                    <div class="filter-group">
+                        <label>Category</label>
+                        {% for category in all_categories %}
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="category"
+                                       value="{{ category }}"
+                                       id="cat-{{ loop.index }}"
+                                       {% if category in current_filters.categories %}checked{% endif %}>
+                                <label class="form-check-label" for="cat-{{ loop.index }}">{{ category }}</label>
+                            </div>
+                        {% else %}
+                            <small class="text-muted">No categories found.</small>
+                        {% endfor %}
+                    </div>
+                    <div class="filter-group">
+                        <label for="min_price">Price Range (₹)</label>
+                        <div class="price-range-inputs">
+                            <input type="number"
+                                   class="form-control form-control-sm"
+                                   id="min_price"
+                                   name="min_price"
+                                   placeholder="Min"
+                                   step="0.01"
+                                   min="0"
+                                   value="{{ current_filters.min_price }}">
+                            <span>-</span>
+                            <input type="number"
+                                   class="form-control form-control-sm"
+                                   id="max_price"
+                                   name="max_price"
+                                   placeholder="Max"
+                                   step="0.01"
+                                   min="0"
+                                   value="{{ current_filters.max_price }}">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Availability</label>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="in_stock"
+                                   id="in_stock"
+                                   {% if current_filters.in_stock %}checked{% endif %}>
+                            <label class="form-check-label" for="in_stock">In Stock Only</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="min_rating">Rating</label>
+                        <select class="form-select form-select-sm" id="min_rating" name="min_rating">
+                            <option value="" {% if not current_filters.min_rating %}selected{% endif %}>Any Rating</option>
+                            <option value="4"
+                                    {% if current_filters.min_rating == '4' %}selected{% endif %}>4 Stars & Up</option>
+                            <option value="3"
+                                    {% if current_filters.min_rating == '3' %}selected{% endif %}>3 Stars & Up</option>
+                            <option value="2"
+                                    {% if current_filters.min_rating == '2' %}selected{% endif %}>2 Stars & Up</option>
+                            <option value="1"
+                                    {% if current_filters.min_rating == '1' %}selected{% endif %}>1 Star & Up</option>
+                        </select>
+                    </div>
+                </aside>
+            </div>
+            <div class="col-lg-9 order-lg-1">
+                {% if products %}
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        {% for product in products %}
+                            <div class="col">
+                                <div class="card product-card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text">
+                                            <small class="text-muted">{{ product.category }}</small>
+                                        </p>
+                                        {% if product.description %}<p class="card-text">{{ product.description | truncate(80) }}</p>{% endif %}
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                Rating: {{ "%.1f"|format(product.rating) }}/5.0 | Stock: {{ product.quantity_in_stock }}
+                                            </small>
+                                        </p>
+                                        <p class="price">₹{{ "%.2f"|format(product.price) }}</p>
+                                        <form action="{{ url_for("web.add_to_cart_manual") }}"
+                                              method="post"
+                                              class="add-cart-form d-flex">
+                                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                                            <input type="number"
+                                                   name="quantity"
+                                                   value="1"
+                                                   min="1"
+                                                   max="{{ product.quantity_in_stock }}"
+                                                   class="form-control form-control-sm quantity-input"
+                                                   required>
+                                            <button type="submit" class="btn btn-primary btn-sm flex-grow-1">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if pagination and pagination.pages > 1 %}
+                        <nav aria-label="Page navigation" class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                {% set args_prev = request.args.copy() %}
+                                {% set _ = args_prev.pop('page', None) %}
+                                <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+                                    <a class="page-link"
+                                       href="{{ url_for('web.browse_products', page=pagination.prev_num, **args_prev) if pagination.has_prev else '#' }}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                                {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                                    {% if page_num %}
+                                        {% set args_page = request.args.copy() %}
+                                        {% set _ = args_page.pop('page', None) %}
+                                        <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                                            <a class="page-link"
+                                               href="{{ url_for('web.browse_products', page=page_num, **args_page) }}">{{ page_num }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% set args_next = request.args.copy() %}
+                                {% set _ = args_next.pop('page', None) %}
+                                <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+                                    <a class="page-link"
+                                       href="{{ url_for('web.browse_products', page=pagination.next_num, **args_next) if pagination.has_next else '#' }}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+                {% else %}
+                    <p class="text-center text-muted mt-5">No products found matching your criteria.</p>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

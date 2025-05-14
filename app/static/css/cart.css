@@ -1,0 +1,26 @@
+.cart-item-row {
+  border-bottom: 1px solid #eee;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.cart-item-row:last-child {
+  border-bottom: none;
+}
+.cart-item-details {
+  display: flex;
+  align-items: center;
+}
+.cart-item-details img {
+  max-width: 60px;
+  margin-right: 1rem;
+}
+.cart-item-actions form {
+  display: inline-block;
+}
+.cart-total {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.checkout-btn {
+  width: 100%;
+}

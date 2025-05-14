@@ -1,0 +1,5 @@
+venv
+instance
+frontend/node_modules
+data
+experiments

@@ -1,0 +1,24 @@
+<div id="chat-history-sidebar">
+    <h5>Chat History</h5>
+    <div id="chat-actions">
+        <button id="clear-history-button" class="btn btn-sm btn-outline-danger">Clear History</button>
+        {# This button is now primarily for the sidebar history loading #}
+        {% if loaded_messages_count == initial_limit and loaded_messages_count < total_messages %}
+            <button id="load-more-button-sidebar"
+                    class="btn btn-sm btn-outline-secondary">Load More</button>
+        {% endif %}
+    </div>
+    <div id="history-messages">
+        {% if chat_history_for_sidebar %}
+            {% for message in chat_history_for_sidebar %}
+                <div class="{{ 'user-message' if message.sender.value == 'user' else 'agent-message' }}">
+                    <div class="message-bubble">
+                        <span>{{ message.message_text }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted small" id="no-history-sidebar-msg">No past chat history found.</p>
+        {% endif %}
+    </div>
+</div>

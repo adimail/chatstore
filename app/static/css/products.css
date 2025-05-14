@@ -1,0 +1,74 @@
+.product-card {
+  margin-bottom: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.product-card .card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.product-card .card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.product-card .card-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+.product-card .price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 1rem;
+}
+.add-cart-form {
+  margin-top: auto;
+}
+.quantity-input {
+  width: 60px;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.filter-sidebar {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #dee2e6;
+  height: fit-content;
+  margin-bottom: 1rem;
+}
+.filter-sidebar h5 {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+.filter-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.filter-group .form-check {
+  margin-bottom: 0.3rem;
+}
+.price-range-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.price-range-inputs input {
+  width: 45%;
+}
+.search-bar-top {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+}
